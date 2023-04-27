@@ -1,5 +1,5 @@
 # MCPoly
-some methods to deal with some manipulation of computational chemistry, mostly about mechanical properties of polymers
+Some methods to deal with some manipulation of computational chemistry, mostly about mechanical properties of polymers./n
 You can use
 [Github-flavored Markdown](https://guides.github.com/features/mastering-markdown/))
-to write your content.
+to write this content.
