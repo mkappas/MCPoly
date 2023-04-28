@@ -8,7 +8,7 @@ to write this content.
 ## Overview
 `MCPoly` is a Python library to make some steps of computational chemistry easier. It includes some functions of drawing molecule structures, creating proper .xyz , .inp , .mol and .data file, which specialised for using ORCA and LAMMPS, and some functions for researching the mechanical property of some polymers.
 
-##Functions for ORCA
+## Functions for ORCA
 ### orcaset
 Used to create ORCA input files and run it on ORCA. It's especially handy for researching mechanical property of polymers.
 
