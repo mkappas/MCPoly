@@ -13,7 +13,7 @@ def YModulus(file):
     Use the calculated .txt file from sscurve.single or sscurve.multiple to get Young's Modulus.
     '''
     datum=pd.read_csv(file)
-    b=re.search(r'[A-Z]+[a-z]?[0-9]*\-?[A-Z]*[0-9]*_', file)
+    b=re.search(r'[A-Z]+[a-z]*[A-Z]*[a-z]*[0-9]*\-?[A-Z]*[0-9]*_', file)
     #print(b.group(0)[:-1])
     datum=datum.rename(columns={'Strain Length(%)':'Strain Length ({0})'.format(b.group(0)[:-1])})
     data=datum['Strain Length ({0})'.format(b.group(0)[:-1])].to_numpy().reshape(-1, 1)

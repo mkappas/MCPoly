@@ -12,14 +12,17 @@ def status_judge(s1,s2,converge):
     if s1==0 or s1==4:
         if s1==0:
             print('The Optimization is processing.')
-        elif s1==4:
+        elif s1==4 and s2==0:
             print('The Optimization is aborted.')
         print('Last time:')
         print('Energy change: {0}'.format(converge[-5]))
         print('RMS gradient: {0}             MAX gradient: {0}'.format(converge[-4],converge[-3]))
         print('RMS step: {0}                 MAX step: {0}'.format(converge[-2],converge[-1]))
-    if s1==1 and s2<=0:
+    if s1!=0 and s2<0:
         print('The Optimization was finished.')
+        if s1==4:
+            print('The frequency calculation is aborted.')
+            return None
         if s2==-1:
             print('The CP-SCF equations are forming.')
         elif s2==-2:
@@ -176,7 +179,7 @@ class status:
     def status(self,choose=0,figureonly=False,statusonly=False):
         """
     A method to see the current process of the ORCA optimisation, including convergence situation and relevant energy chart.
-    status(choose=0, figureonly=False, statusonly=False)
+    status(choose=0, figureonly=False, statusonly=False,last=-1)
     choose: See the latest energy process. e.g. When choose=5, it will show the last five energy data on the chart.
     figureonly: If 'figureonly' is True, the code will show no status information. The default is False.
     statusonly: If 'statusonly' is True, the code will output the current process status only, not energy. 
@@ -218,12 +221,12 @@ class status:
 
         return normalstatus(self.loc,self.file,choose,figureonly,statusonly)
     
-    def figure(self,num,width=300,height=300):
+    def figure(self,num=0,width=300,height=300):
         """
-    A method to see the current geometry structure of the ORCA optimisation, powered by py3Dmol.
+    A method to see the current geometry structure of the ORCA optimisation, powered by py3Dmol and rdkit.
     TIPS: Make sure your _trj.xyz file is in the document with .out file, or there will be NoFileFoundError!!!
     
-    figurestatus(num=0, width, height)
+    figure(num=0, width=300, height=300)
     num: The step of your convergence.
     width, height: The size of your 3D geometry molecule strcuture. Default: 300x300.
         """
@@ -243,7 +246,7 @@ class status:
     A method to see the current geometry structure and optimization trajectory of the ORCA optimisation, powered by py3Dmol and ipywidgets package.
     TIPS: Make sure your _trj.xyz file is in the document with .out file, or there will be FileNotFoundError!!!
     
-    figurestatus(num=0, width, height)
+    figurestatus(num=0, width=300, height=300)
     num: The step of your convergence.
     width, height: The size of your 3D geometry molecule strcuture. Default: 300x300.
     After forming the 3D geometry molecule strcuture, you can scroll to see other structures of relevant molecules.

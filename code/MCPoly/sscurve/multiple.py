@@ -4,8 +4,9 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from .YModulus import YModulus
+import warnings
 
-def multiple(allname='Results',polymers=[],loc='./',savefig=True,savedata=True,needYM=True):
+def multiple(allname='Result',polymers=[],loc='./',savefig=True,savedata=True,needYM=True,xx=False):
     """
     The method to create a Stress-Strain Curve chart and .csv relevant data file of all polymers you choose.
     multiple(allname='Results', polymers=[file1, file2, file3, ...], loc='./', savefig=True, savedata=True, needYM=True))
@@ -56,6 +57,7 @@ def multiple(allname='Results',polymers=[],loc='./',savefig=True,savedata=True,n
                     polymers.append(path[:-11])            
     print(polymers)
     
+    os.chdir(loc)
     try:
         f=open('ot.txt','x')
     except:
@@ -73,39 +75,41 @@ def multiple(allname='Results',polymers=[],loc='./',savefig=True,savedata=True,n
         try:
             datum=pd.read_csv(polymer)
         except:
+            warnings.warn("'{0}' is not found.".format(polymer))
             continue
         datum=datum[:].sort_values(by=['Strain Length(%)'])
-        ax=plt.plot(datum['Strain Length(%)'][:-1],datum['Stress Force(nN)'][:-1],'*-')
+        if xx==False:
+            ax=plt.plot(datum['Strain Length(%)'][:-1],datum['Stress Force(nN)'][:-1],'*-')
         if needYM==True:
             ym.append(YModulus(polymer))
-        b=re.search(r'[A-Z]+[a-z]?[0-9]*\-?[A-Z]*[0-9]*_', polymer)
-        #print(b.group(0)[:-1])
-        datum=datum.rename(columns={'Strain Length(%)':'Strain Length ({0})'.format(b.group(0)[:-1])})
+        datum=datum.rename(columns={'Strain Length(%)':'Strain Length ({0})'.format(polymer[:-11])})
         ot=pd.merge_ordered(ot, datum[:-1], fill_method="ffill" , left_by="Stress Force(nN)")
-        name.append(b.group(0)[:-1])
+        name.append(polymer[:-11])
         i=i+1
 
     if needYM==True:
         al=pd.DataFrame(data=ym, index=ot.columns, columns=["Young's Modulus"])
         al=al.T
-    #print(al)
+        #print(al)
         ot=pd.concat([ot,al])
     ot=ot.set_index('Stress Force(nN)')
     print(ot)
     if savedata==True:
-        ot.to_csv('file1.csv')
+        ot.to_csv('{0}.csv'.format(allname))
     
-    #ax = sns.scatterplot(data=ot, alpha=0.8)
-    #ax.set_ylabels='Strain Length(%)'
-    #_ = plt.title('Stress-Strain Curve')
-    #bx = sns.relplot(data=ot, kind="line", alpha=0.5)
-    #bx.set_ylabels='Strain Length(%)'
-    #ax.legend(bbox_to_anchor=[1.1,0.9])
-    plt.xlabel('Strain Length(%)')
-    plt.ylabel('Stress Force(nN)')
-    plt.legend(name,bbox_to_anchor=[1.1,0.9])
+    if xx==False:
+        #ax = sns.scatterplot(data=ot, alpha=0.8)
+        #ax.set_ylabels='Strain Length(%)'
+        #_ = plt.title('Stress-Strain Curve')
+        #bx = sns.relplot(data=ot, kind="line", alpha=0.5)
+        #bx.set_ylabels='Strain Length(%)'
+        #ax.legend(bbox_to_anchor=[1.1,0.9])
+        plt.xlabel('Strain Length(%)')
+        plt.ylabel('Stress Force(nN)')
+        plt.legend(name,bbox_to_anchor=[1.1,0.9])
+        _ = plt.title('Stress-Strain Curve')
+        plt.show()
     
-    _ = plt.title('Stress-Strain Curve')
     if savefig==True:
         plt.savefig('{0}.png'.format(allname),bbox_inches='tight')
     
