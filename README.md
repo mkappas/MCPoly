@@ -15,6 +15,9 @@ Used to create ORCA input files and run it on ORCA. It's especially handy for re
 ### status
 Because we can't use ORCA to visualize the geometry structure, this command can be used to see the optimisation status and the trait of geometry structure.
 
+### view3d
+See the 3D structure of a normal .xyz file.
+
 ### sscurve
 With calculated .xyz file, we can draw the stress-strain curve of each polymer, and we can also calculate the Young's modulus of relevant polymers.
 
