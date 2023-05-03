@@ -3896,7 +3896,7 @@ class molecule:
             Example:
                 Input:
                     from MCPoly.moldraw import molecule
-                    atoms=molecule('Et','../')
+                    atoms=molecule('Atoms1','../')
                     atoms.sub('D5',7)
                     atoms.sub('Me',4)
                     atoms.geoview()
@@ -3905,7 +3905,57 @@ class molecule:
         '''
         return view(self.atoms)
     
-    def conformer(self,lowenergy=99999,highenergy=-99999):
+    def xyzwrite(self, name=''):
+        '''
+            To save the current structures of molecule, powered by ase.
+            xyzwrite(name)
+            Have the results as ase.io.write(name, atoms)
+            Example:
+                Input:
+                    from MCPoly.moldraw import molecule
+                    atoms=molecule('Atoms1','../')
+                    atoms.sub('D5',7)
+                    atoms.sub('Me',4)
+                    atoms.xyzwrite()
+        '''
+        if name=='':
+            name=self.file
+        return write(self.file+'.xyz',self.atoms)
+    
+    def straight(self,start,end):
+        '''
+            To turn the molecule and make sure the start and end of the molecule is parallel with x axis, powered by ase.
+            straight(start,end)
+            Example:
+                Input:
+                    from MCPoly.moldraw import molecule
+                    atoms=molecule('Atoms1','../')
+                    atoms.sub('D5',7)
+                    atoms.sub('Me',4)
+                    atoms.straight(1,12)
+                    atoms.xyzwrite()
+                Output in Et.xyz:
+                    1 0.163 -1.262 -0.273
+                    ...
+                    12 4.691 -1.262 -0.273
+                    ...
+        '''
+        pos=self.atoms.get_positions()
+        Apos=pos[start]
+        Bpos=pos[end]
+        self.atoms.rotate(m.atan((Bpos[-1]-Apos[-1])/(Bpos[1]-Apos[1]))/m.pi*180,'x',Apos)
+        pos=self.atoms.get_positions()
+        Apos=pos[start]
+        Bpos=pos[end]
+        self.atoms.rotate(m.atan((Bpos[-1]-Apos[-1])/(Bpos[0]-Apos[0]))/m.pi*180,'y',Apos)
+        pos=self.atoms.get_positions()
+        Apos=pos[start]
+        Bpos=pos[end]
+        self.atoms.rotate(m.atan(-(Bpos[1]-Apos[1])/(Bpos[0]-Apos[0]))/m.pi*180+180,'z',Apos)
+        pos=self.atoms.get_positions()
+        return self.atoms
+    
+    def conformer(self,lowenergy=99999,highenergy=-99999,must=False):
         '''
             To create a conformer of current molecule. Powered by rdkit and py3Dmol. Not original.
             conformer(lowenergy=-99999,highenergy=99999)
@@ -3966,9 +4016,11 @@ class molecule:
         print("Molecule: generated", len(conformerIds), "conformers and", len(rmsClusters), "clusters")
         #print(conformerPropsDict)
         v=draw_with_spheres(suppl)
-        
-        xoy=input('Do you want to save this structure? [y/n]')
-        if xoy=='y':
+        if must==True:
             print(Chem.MolToMolBlock(suppl),file=open('{0}_Conformer.mol'.format(self.file),'w+'))
+        else:
+            xoy=input('Do you want to save this structure? [y/n]')
+            if xoy=='y':
+                print(Chem.MolToMolBlock(suppl),file=open('{0}_Conformer.mol'.format(self.file),'w+'))
         os.system('rm {0}'.format(self.file+'.mol'))
         os.chdir(opath)

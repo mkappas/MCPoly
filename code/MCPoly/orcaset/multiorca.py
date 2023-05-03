@@ -64,7 +64,7 @@ class multiorca:
         i=1
         for file in self.files:
             print('{0}. '.format(i)+file+'.xyz '+'[{0}]'.format(t.ctime(t.time())))
-            XYZtoINP(file,method=method,basis_set=basis_set,opt=opt,freq=freq,scan=scan,external_force=external_force,ts=ts,aim=aim,stretch=stretch,
+            XYZtoINP(file,fileloc=self.loc,saveloc=self.loc,method=method,basis_set=basis_set,opt=opt,freq=freq,scan=scan,external_force=external_force,ts=ts,aim=aim,stretch=stretch,
                      scanstep=scanstep,strain=strain,maxiter=maxiter,maxcore=maxcore,corenum=corenum,electron=electron,state=state)
             orca(file,orcaloc,self.loc,self.loc)
             i=i+1

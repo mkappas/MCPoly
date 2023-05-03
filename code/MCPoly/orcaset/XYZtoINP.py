@@ -2,13 +2,14 @@ import os
 from ase.io import read
 import warnings
 
-def XYZtoINP(file,inpname='',loc='./',method='B3LYP',basis_set='def2-SVP',opt=False,freq=False,scan=False,external_force=False,ts=False,aim=[0,0],stretch=-1,scanstep=10,strain=-1,maxiter=-1,maxcore=-1,corenum=1,electron=0,state=1):
+def XYZtoINP(file,inpname='',fileloc='./',saveloc='./',method='B3LYP',basis_set='def2-SVP',opt=False,freq=False,scan=False,external_force=False,ts=False,aim=[0,0],stretch=-1,scanstep=10,strain=-1,maxiter=-1,maxcore=-1,corenum=1,electron=0,state=1):
     """
     The method to convert .xyz file into .inp file.
     XYZtoINP(file,inpname='',loc='./',method='B3LYP',basis_set='def2-SVP',opt=False,freq=False,scan=False,external_force=False,ts=False,aim=[0,0],stretch=1,scanstep=10,strain=-1,maxiter=-1,maxcore=-1,corenum=1,electron=0,state=1)
     file: Your .xyz file name.
     inpname: The name of your saved .inp file.
-    loc: File Location. The default is your current location.
+    fileloc: File Location. The default is your current location.
+    saveloc: Input File Save Location. The default is your current location.
     method: Your semiempirical/ab initio/DFT calculation methods. The default is B3LYP.
     basis_set: Your basis set. The default is def2-SVP.
     opt: To show if you want to optimise your molecule. The default is False.
@@ -97,17 +98,17 @@ def XYZtoINP(file,inpname='',loc='./',method='B3LYP',basis_set='def2-SVP',opt=Fa
                 ...
             *
     """
-    f=open(loc+file+'.xyz','r')
+    f=open(fileloc+file+'.xyz','r')
     if inpname=='':
         try:
-            w=open(file+'.inp','x')
+            w=open(saveloc+file+'.inp','x')
         except:
-            w=open(file+'.inp','w')
+            w=open(saveloc+file+'.inp','w')
     else:
         try:
-            w=open(inpname+'.inp','x')
+            w=open(saveloc+inpname+'.inp','x')
         except:
-            w=open(inpname+'.inp','w')
+            w=open(saveloc+inpname+'.inp','w')
     w.write('#Powered by MCPoly\n\n')
     w.write('! {0} {1} '.format(method,basis_set))
     if opt==True:
@@ -151,7 +152,7 @@ def XYZtoINP(file,inpname='',loc='./',method='B3LYP',basis_set='def2-SVP',opt=Fa
             raise AssertionError("You can't set scan and transition state at the same time.")
         if freq==True:
             raise AssertionError("You can't set scan and frequency calculation at the same time.")
-        atoms=read(file+'.xyz')
+        atoms=read(fileloc+file+'.xyz')
         distance=atoms.get_distance(aim[0],aim[1])
         if distance+stretch<0:
             raise ValueError("You can't set the final distance of atoms less than 0.")

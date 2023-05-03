@@ -203,6 +203,7 @@ def replication(filename,x,xgap,y,ygap,z,zgap,absolute=False,startloc=[0,0,0],lo
             f.write('\n')
         else:
             f.write(line)
+    f.close()
     os.chdir(opath)
 
 def replication_brick(filename,x,xgap,y,ygap,z,zgap,xpattern='0',ypattern='0',zpattern='0',shuffle=0,absolute=False,startloc=[0,0,0],loc='./'):
@@ -211,6 +212,8 @@ def replication_brick(filename,x,xgap,y,ygap,z,zgap,xpattern='0',ypattern='0',zp
     xloc=startloc[0]
     yloc=startloc[1]
     zloc=startloc[2]
+    opath=os.getcwd()
+    os.chdir(loc)
     k=0
     w1=0
     w2=0
@@ -780,7 +783,9 @@ def replication_brick(filename,x,xgap,y,ygap,z,zgap,xpattern='0',ypattern='0',zp
             w4=0
             f.write('\n')
         else:
-            f.write(line)    
+            f.write(line)
+    f.close()
+    os.chdir(opath)
 
 class mould:
     """
