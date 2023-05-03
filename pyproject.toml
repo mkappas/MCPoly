@@ -1,6 +1,6 @@
 [project]
 name = "MCPoly"
-version = "0.0.1"
+version = "0.0.3"
 authors = [
   { name="Omicron Fluor", email="cxs454@student.bham.ac.uk" },
 ]
