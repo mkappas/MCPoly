@@ -27,7 +27,7 @@ def draw_with_spheres(mol,width,height):
     v = py3Dmol.view(width=width,height=height)
     IPythonConsole.addMolToView(mol,v)
     v.zoomTo()
-    v.setStyle({'sphere':{'radius':0.3},'stick':{'radius':0.2}});
+    v.setStyle({'sphere':{'radius':0.4},'stick':{'radius':0.1}});
     v.show()
 
 def view3d(filename,loc='./',width=300,height=300):
