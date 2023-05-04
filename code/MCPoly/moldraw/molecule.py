@@ -3790,7 +3790,7 @@ class molecule:
             molecule(file,loc='./')
             file: Your polymer name on your file.
             loc: File Location. The default is your current location.
-            You can get the further information by .sub, .bind and .C .
+            You can get the further information by .sub, .bind, .C, .geoview, .xyzwrite, .straight and .conformer.
         '''
         atoms=read(loc+file+'.xyz')
         self.file=file
