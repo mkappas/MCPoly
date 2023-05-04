@@ -6,7 +6,7 @@ Some methods to deal with some manipulation of computational chemistry, mostly a
 `MCPoly` is a Python library to make some steps of computational chemistry easier. It includes some functions of drawing molecule structures, creating proper .xyz , .inp , .mol and .data file, which specialised for using ORCA and LAMMPS, and some functions for researching the mechanical property of some polymers.
 
 ## Functions for ORCA
-<img src="https://github.com/Omicron-Fluor/MCPoly/blob/main/reference/ORCA.png" width="25px" height="25px" >
+<img src="https://github.com/Omicron-Fluor/MCPoly/blob/main/reference/ORCA.png" width="400" height="263" >
 
 ### orcaset
 Used to create ORCA input files and run it on ORCA. It's especially handy for researching mechanical property of polymers.
@@ -25,7 +25,7 @@ With calculated .xyz file, we can draw the stress-strain curve of each polymer, 
 Used to build a simple molecule and save it under .xyz form.
 
 ## Functions for LAMMPS
-<img src="https://github.com/Omicron-Fluor/MCPoly/blob/main/reference/LAMMPS.png" width="25px" height="25px" >
+<img src="https://github.com/Omicron-Fluor/MCPoly/blob/main/reference/LAMMPS.png" width="1040" height="263" >
 
 ### lmpset
 Used to draw special patterns of polymers. Mostly in grids.
