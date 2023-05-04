@@ -26,7 +26,7 @@ With calculated .xyz file, we can draw the stress-strain curve of each polymer, 
 Used to build a simple molecule and save it under .xyz form.
 
 ## Functions for LAMMPS
-<div style="width:25% ; height:25%">
+<div style="width:60px ; height:60px">
 ![](./reference/LAMMPS.png)
 <div>
 ### lmpset
