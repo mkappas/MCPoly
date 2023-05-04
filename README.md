@@ -12,6 +12,7 @@ to write this content.
 ### orcaset
 Used to create ORCA input files and run it on ORCA. It's especially handy for researching mechanical property of polymers.
 
+
 ### status
 Because we can't use ORCA to visualize the geometry structure, this command can be used to see the optimisation status and the trait of geometry structure.
 
@@ -29,16 +30,16 @@ Used to build a simple molecule and save it under .xyz form.
 Used to draw special patterns of polymers. Mostly in grids.
 
 ## Installation
-To get `MCPoly`, you can install it with pip:
-`$ pip install MCPoly`
+To get `MCPoly`, you can install it with pip::
+    $ pip install MCPoly
 
 If you want to get the latest version of `MCPoly`, you can see the latest release here:
 
 <https://github.com/Omicron-Fluor/MCPoly/release> 
 
-There will be a corresponding release on `pip` for each release on GitHub, and you can update your `MCPoly` with:
+There will be a corresponding release on `pip` for each release on GitHub, and you can update your `MCPoly` with::
 
-`$ pip install MCPoly --upgrade`
+$ pip install MCPoly --upgrade
 
 ## How to cite
 <https://github.com/Omicron-Fluor/MCPoly>
