@@ -25,7 +25,7 @@ With calculated .xyz file, we can draw the stress-strain curve of each polymer, 
 Used to build a simple molecule and save it under .xyz form.
 
 ## Functions for LAMMPS
-<img src="https://github.com/Omicron-Fluor/MCPoly/blob/main/reference/LAMMPS.png" width="1040" height="263" >
+<img src="https://github.com/Omicron-Fluor/MCPoly/blob/main/reference/LAMMPS.png" width="395" height="100" >
 
 ### lmpset
 Used to draw special patterns of polymers. Mostly in grids.
