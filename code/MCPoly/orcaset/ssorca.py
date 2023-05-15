@@ -131,7 +131,7 @@ class ssorca:
         """
         
         print('File: {0}.xyz'.format(self.file))
-        XYZtoINP(self.file,fileloc=self.loc,saveloc=self.loc,method=method,basis_set=basis_set,opt=True,freq=freq,\
+        XYZtoINP(self.file,loc=self.loc,method=method,basis_set=basis_set,opt=True,freq=freq,\
                  external_force=True,aim=aim,strain=strain,maxiter=maxiter,maxcore=maxcore,corenum=corenum,\
                  electron=electron,state=state)
         os.system('cp {0}.inp {0}_0.000.inp'.format(self.file))
@@ -159,7 +159,7 @@ class ssorca:
                 if strain>=key:
                     XYZtoINP(self.file+'_{0:.3f}'.format(strain),inpname=self.file+'_{0:.3f}'.format(strain+forcestep[key]),\
                              method=method,basis_set=basis_set,opt=True,freq=freq,\
-                             external_force=True,aim=aim,strain=strain,maxiter=maxiter,maxcore=maxcore,\
+                             external_force=True,aim=aim,strain=strain+forcestep[key],maxiter=maxiter,maxcore=maxcore,\
                              corenum=corenum,electron=electron,state=state)
                     strain=strain+forcestep[key]
                     break

@@ -5,19 +5,19 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-def curvef(loc,polymer,start,end,savefig,savedata,xx=False):
+def curvef(loc,polymer,start,end,savefig,savedata):
     opath=os.getcwd()
     try:
-        f=open(loc+'{0}_Result.txt'.format(polymer),'x')
+        f=open('{0}_Result.txt'.format(polymer),'x')
     except:
-        f=open(loc+'{0}_Result.txt'.format(polymer),'w')
+        f=open('{0}_Result.txt'.format(polymer),'w')
     
     f.write('Strain Length(%),Stress Force(nN)\n')
 
     res = []
     for path in os.listdir(loc):
         if os.path.isfile(os.path.join(loc, path)):
-            a=re.search(polymer+'_', path)
+            a=re.match(polymer+'_', path)
             if a:
                 b=re.search('.xyz',path)
                 if b:
@@ -27,7 +27,7 @@ def curvef(loc,polymer,start,end,savefig,savedata,xx=False):
                     res.append(path)
     print(res)
     res.sort()
-    os.chdir(loc)
+    
     try:
         atoms=read('{0}_0.000.xyz'.format(polymer))
     except:
@@ -45,18 +45,16 @@ def curvef(loc,polymer,start,end,savefig,savedata,xx=False):
     datum=datum[:].sort_values(by=['Strain Length(%)']) #Sort document
     datum=datum[:-1]
     print(datum)
-    if xx==False:
-        a=sns.scatterplot(data=datum, x=datum['Strain Length(%)'],y=datum['Stress Force(nN)'],color='black',alpha=0.5)
-        a.plot(datum['Strain Length(%)'],datum['Stress Force(nN)'])
-        plt.xlabel('Strain Length(%)')
-        plt.ylabel('Stress Force(nN)')
-        _=plt.title('Strain-Stress Curve')
-    if savedata==False:
-        os.system('rm {0}_Result.txt'.format(polymer))
+    a=sns.scatterplot(data=datum, x=datum['Strain Length(%)'],y=datum['Stress Force(nN)'],color='black',alpha=0.5)
+    a.plot(datum['Strain Length(%)'],datum['Stress Force(nN)'])
+    plt.xlabel('Strain Length(%)')
+    plt.ylabel('Stress Force(nN)')
+    _=plt.title('Strain-Stress Curve')
     if savefig==True:
         plt.savefig('{0}.png'.format(polymer),bbox_inches='tight')
-    if xx==False:
-        plt.show()
+    plt.show()
+    if savedata==False:
+        os.system('rm {0}_Result.txt'.format(polymer))
     os.chdir(opath)
     
 class single:
@@ -71,7 +69,7 @@ class single:
         self.loc=loc
         self.polymer=polymer
 
-    def curve(self,start,end,savefig=True,savedata=True,xx=False):
+    def curve(self,start,end,savefig=True,savedata=True):
         """
     The method to create a single polymer chart of Stress-Strain Curve and .txt relevant data file of stress and strain.
     curve(start, end, savefig=True, savedata=True)
@@ -96,9 +94,9 @@ class single:
             <matplotlib chart>
     TIPS: Make sure all your .xyz file is in the current location, or the chart may have some mistakes.
         """
-        return curvef(self.loc,self.polymer,start,end,savefig,savedata,xx)
+        return curvef(self.loc,self.polymer,start,end,savefig,savedata)
     
-    def autocurve(self,savefig=True,savedata=True,xx=False):
+    def autocurve(self,savefig=True,savedata=True):
         """
     The method to create a single polymer chart of Stress-Strain Curve and .txt relevant data file of stress and strain the same as function curve. but it can be more handy if there are some .out or .inp files. 
     autocurve(savefig=True, savedata=True)
@@ -126,7 +124,7 @@ class single:
         t=0
         for path in os.listdir(self.loc):
             if os.path.isfile(os.path.join(self.loc, path)):
-                a=re.search(self.polymer+'_', path)
+                a=re.match(self.polymer+'_', path)
                 if a:
                     b=re.search('.inp',path)
                     if b:
@@ -166,4 +164,4 @@ class single:
                     if a:
                         i=i+1
             os.chdir(opath)
-        return curvef(self.loc,self.polymer,start,end,savefig,savedata,xx)
+        return curvef(self.loc,self.polymer,start,end,savefig,savedata)

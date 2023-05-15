@@ -93,7 +93,7 @@ def multiple(allname='Result',polymers=[],loc='./',savefig=True,savedata=True,ne
         #print(al)
         ot=pd.concat([ot,al])
     ot=ot.set_index('Stress Force(nN)')
-    print(ot)
+    display(ot)
     if savedata==True:
         ot.to_csv('{0}.csv'.format(allname))
     
