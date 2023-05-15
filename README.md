@@ -6,6 +6,12 @@ Some methods to deal with some manipulation of computational chemistry, mostly a
 `MCPoly` is a Python library to make some steps of computational chemistry easier. It includes some functions of drawing molecule structures, creating proper .xyz , .inp , .mol and .data file, which specialised for using ORCA and LAMMPS, and some functions for researching the mechanical property of some polymers.
 
 ## Updated in v0.1.0 (11.05.23)
+1. BIG UPDATE: Add GUI ORCA setting screens for multiple ORCA calculations and Stress-Strain Curve Output. You can use orca.mgui and sscurve.gui to learn more.
+2. BIG UPDATE: MCPoly.vis is created. Use MCPoly.vis() to directly show all four GUI screen.
+<img src="https://github.com/Omicron-Fluor/MCPoly/blob/main/reference/ssgui_shot.png">
+3. Fix some bugs on mechanical calculations and stress-strain curve drawings.
+
+## Updated in v0.1.0 (11.05.23)
 1. BIG UPDATE: Add GUI ORCA setting screens for normal ORCA calculations and Mechanical ORCA calculation. You can use orcaset.gui and orcaset.ssgui to learn more.
 <img src="https://github.com/Omicron-Fluor/MCPoly/blob/main/reference/ssgui_shot.png">
 2. Fix some bugs on mechanical calculations and stress-strain curve drawings.
