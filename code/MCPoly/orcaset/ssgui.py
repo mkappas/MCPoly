@@ -64,7 +64,7 @@ def ssgui():
     def showfrom(fromshow,file,loc,aim1,aim2):
         fromoutput.clear_output()
         opath=os.getcwd()
-        polymers=[]
+        polymers0=[]
         for path in os.listdir(loc):
             if os.path.isfile(os.path.join(loc, path)):
                 a=re.search('{0}_'.format(file), path)
@@ -73,8 +73,19 @@ def ssgui():
                     if b:
                         c=re.match('{0}_trj.xyz'.format(file), path)
                         if not c:
-                            polymers.append(path[:-8])
-        polymers.sort()
+                            polymers0.append(path[:-8])
+        polynums=[]
+        polymers=[]
+        polymers0.sort()
+        for polymer in polymers0:
+            a=re.split('_',polymer)
+            polynums.append(eval(a[1]))
+            polyname=a[0]
+        polynums.sort()
+        
+        for num in polynums:
+            polymers.append('{0}_{1:.3f}'.format(polyname,num))
+        
         with fromoutput:
             for i,polymer in enumerate(polymers):
                 print(polymer+': {0:.6f} Hartree'.format(status(polymer,loc).status(figureonly=True)[-1]))
@@ -340,4 +351,6 @@ def ssgui():
     frame3.layout=box_layout2
     curveoutput.layout=widgets.Layout(display='flex', flew_flow='column', overflow='scroll hidden',\
                     align_items='stretch', height='550px', width='100%')
+    output2.layout=widgets.Layout(display='flex', flew_flow='column', overflow='scroll hidden',\
+                    align_items='stretch', width='100%')
     display(widgets.HBox([frame1,output,frame3]))
