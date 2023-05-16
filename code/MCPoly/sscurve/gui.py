@@ -41,19 +41,34 @@ def gui():
             f=open('ot.txt','x')
         except:
             f=open('ot.txt','w')
-        f.write('Stress Force(nN)\n0.\n0.5\n1.\n1.5\n2.\n2.5\n3.\n3.5\n4.\n4.5\n5.\n5.5\n6.\n6.5\n7.\n7.5\n8.\n8.5\n9.\n9.5\n10.')
-        f.close()
         
-        ot=pd.read_csv('ot.txt')
         name=[]
         i=0
-    
+        
+        site=[]
+        
         for polymer in polymers:
             polymer=polymer+'_Result.txt'
             try:
                 datum=pd.read_csv(polymer)
             except:
                 warnings.warn("'{0}' is not found.".format(polymer))
+                continue
+            datum=datum[:].sort_values(by=['Strain Length(%)'])
+            for num in datum['Stress Force(nN)'][:-1]:
+                if num not in site:
+                    site.append(num)
+        site.sort()
+        f.write('Stress Force(nN)\n')
+        for num in site:
+            f.write('{0:.3f}\n'.format(num))
+        f.close()
+        ot=pd.read_csv('ot.txt')
+        for polymer in polymers:
+            polymer=polymer+'_Result.txt'
+            try:
+                datum=pd.read_csv(polymer)
+            except:
                 continue
             datum=datum[:].sort_values(by=['Strain Length(%)'])
             ax=plt.plot(datum['Strain Length(%)'][:-1],datum['Stress Force(nN)'][:-1],'*-')
@@ -112,6 +127,7 @@ def gui():
     def filejudge(files,loc):
         judgeoutput.clear_output()
         output2.clear_output()
+        output3.clear_output()
         opath=os.getcwd()
         os.chdir(loc)
         #geoi=widgets.IntText(value=0)
