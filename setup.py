@@ -5,12 +5,12 @@ with open('README.md') as readme_file:
 
 setup_args = dict(
     name='MCPoly',
-    version='0.2.0',
+    version='0.2.1',
     description='Useful tools for Computational Chemistry for polymers',
     long_description_content_type="text/markdown",
     long_description=README,
     license="MIT",
-    packages=['MCPoly','MCPoly.lmpset','MCPoly.moldraw','MCPoly.orcaset','MCPoly.sscurve','MCPoly.status','MCPoly.view3d','MCPoly.version'],
+    packages=['MCPoly','MCPoly.lmpset','MCPoly.moldraw','MCPoly.orcaset','MCPoly.sscurve','MCPoly.status','MCPoly.view3d','MCPoly.version','MCPoly.vis'],
     author='Omicron Fluor',
     author_email='cxs454@student.bham.ac.uk',
     keywords=['ORCA', 'Mechanical Property', 'Computational Chemistry'],
