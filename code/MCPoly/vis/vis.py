@@ -6,6 +6,7 @@ mydir = os.path.dirname( __file__ )
 statusdir = os.path.join(mydir, '..', 'status')
 sys.path.append(statusdir)
 from status import status
+from gui import gui as gui3
 
 mydir = os.path.dirname( __file__ )
 orcadir = os.path.join(mydir, '..')#, 'orcaset')
@@ -37,6 +38,7 @@ def vis():
     screen2=widgets.Output()
     screen3=widgets.Output()
     screen4=widgets.Output()
+    screen5=widgets.Output()
     
     with screen1:
         gui1()
@@ -46,11 +48,13 @@ def vis():
         mgui()
     with screen4:
         gui2()
+    with screen5:
+        gui3()
     
-    tab_contents = ['Normal ORCA','Mechanical ORCA','Multiple ORCA','Stress-Strain Curve']
+    tab_contents = ['Normal ORCA','Mechanical ORCA','Multiple ORCA','Stress-Strain Curve','Energy Diagram']
     tab = widgets.Tab(style=dict(font_weight='bold'))
     #children = [widgets.Label(name,style=dict(font_weight='bold')) for name in tab_contents]
-    children = [screen1,screen2,screen3,screen4]
+    children = [screen1,screen2,screen3,screen4,screen5]
     tab.children=children
     tab.titles = tab_contents
     tab.layout = widgets.Layout(layout=widgets.Layout(width='50%'))
