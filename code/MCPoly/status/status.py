@@ -152,6 +152,7 @@ def normalstatus(loc,file,choose=0,figureonly=False,statusonly=False):
         if x3:
             s1=4
     if statusonly==True:
+        os.chdir(path)
         if s2==1:
             return 2
         else:
@@ -162,6 +163,19 @@ def normalstatus(loc,file,choose=0,figureonly=False,statusonly=False):
         statusfig(energy,choose)
     os.chdir(path)
     return energy
+
+def gibbs_free_energy(loc, file):
+    path = os.getcwd()
+    os.chdir(loc)
+    f=open(file+'.out','r')
+    for line in f:
+        a=re.search('Final Gibbs free energy', line)
+        if a:
+            b=re.search(r'-[0-9]+\.[0-9]+', line)
+            os.chdir(path)
+            return '{0:.6f}'.format(eval(b.group(0)))
+    os.chdir(path)
+    raise Exception("'{0}.out' may not have keyword freq, or it's aborted. Please check your input file and recalculate it.".format(file))
 
 class status:
     """
@@ -220,6 +234,34 @@ class status:
         """
 
         return normalstatus(self.loc,self.file,choose,figureonly,statusonly)
+    
+    def energy(self):
+        """
+    A method to see the final(or latest) Energy of a system.
+    energy()
+        """
+        E=normalstatus(self.loc,self.file,figureonly=True)
+        return eval('{0:.6f}'.format(E[-1]))
+
+    def converged_energy(self):
+        """
+    A method to see the Converged Energy of a system.
+    converged_energy()
+        """
+        E=normalstatus(self.loc,self.file,figureonly=True)
+        state=normalstatus(self.loc,self.file,figureonly=True,statusonly=True)
+        if state!=2:
+            raise Exception("This optimisation of '{0}.out' is failed. No converged energy.".format(self.file))
+        else:
+            return eval('{0:.6f}'.format(E[-1]))
+    
+    def gibbs(self):
+        """
+    A method to see the Gibbs Free Energy of a system.
+    gibbs()
+    TIPS: Make sure the optimisation includes key word 'freq', which means frequency calculation.
+        """
+        return eval(gibbs_free_energy(self.loc,self.file))
     
     def figure(self,num=0,width=300,height=300):
         """
