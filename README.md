@@ -7,7 +7,7 @@ Some methods to deal with some manipulation of computational chemistry, mostly a
 
 ## Updated in v0.3.0 (19.05.23)
 1. BIG UPDATE: Now status package can be used to see energy and gibbs free energy by .energy and .gibbs.
-2. BIG UPDAte: The new Reaction Diagram GUI is included in this package. You can use it to merge some tables and sea the relevant reaction diagram as a reference.
+2. BIG UPDATE: The new Reaction Diagram GUI is included in this package. You can use it to merge some tables and sea the relevant reaction diagram as a reference.
 <img src="https://github.com/Omicron-Fluor/MCPoly/blob/main/reference/status_gui.png">
 3. Fix some bugs about availability of Stress-Strain Curve Output.
 
