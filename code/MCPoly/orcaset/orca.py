@@ -1,7 +1,6 @@
 import os
 import re
 import time as t
-from .XYZtoINP import XYZtoINP
 
 def orca(file,orcaloc='./',fileloc='./',saveloc='./'):
     """

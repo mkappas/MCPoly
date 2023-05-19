@@ -70,7 +70,10 @@ def gui():
                 datum=pd.read_csv(polymer)
             except:
                 continue
-            datum=datum[:].sort_values(by=['Strain Length(%)'])
+            try:
+                datum=datum[:].sort_values(by=['Strain Length(%)'])
+            except:
+                continue
             ax=plt.plot(datum['Strain Length(%)'][:-1],datum['Stress Force(nN)'][:-1],'*-')
             datum=datum.rename(columns={'Strain Length(%)':'Strain Length ({0})'.format(polymer[:-11])})
             ot=pd.merge_ordered(ot, datum[:-1], fill_method="ffill" , left_by="Stress Force(nN)")
