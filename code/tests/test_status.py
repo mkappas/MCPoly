@@ -1,4 +1,5 @@
-from MCPoly import status
+from MCPoly.status import status
+from MCPoly.status import echart
 from MCPoly import view3d
 import pytest
 import os
@@ -27,12 +28,26 @@ def test2_status_status1(current1):
 def current1():
     return status('Atoms1',loc='./data_status/')
 
-def test_status_statusonly1(current1):
+def test1_status_statusonly1(current1):
     opath=os.getcwd()
     os.chdir('./MCPoly/tests')
     num=current1.status(figureonly=True,statusonly=True)
     os.chdir(opath)
     assert num==2
+    
+def test2_status_statusonly1(current1):
+    opath=os.getcwd()
+    os.chdir('./MCPoly/tests')
+    num=current1.energy()
+    os.chdir(opath)
+    assert num==-1150.932617
+
+def test3_status_statusonly1(current1):
+    opath=os.getcwd()
+    os.chdir('./MCPoly/tests')
+    num=current1.gibbs()
+    os.chdir(opath)
+    assert num==-1150.919111
     
 @pytest.fixture
 def current2():
@@ -99,3 +114,89 @@ def status_figureonly(current1):
     current1.figuretraj()
     os.chdir(opath)
     return 0
+
+@pytest.fixture
+def current5():
+    return ['Atoms1','Atoms5']
+
+def test1_status_echart(current5):
+    opath=os.getcwd()
+    os.chdir('./MCPoly/tests')
+    data=echart(files=current5,loc='./data_status/',fig_pattern='line',hartree=True,absolute=True,figdata=True,savefig=False,xx=True)
+    assert data==[-1150.932617,-995.394366]
+    f=open('./data_status/Result.csv','r')
+    a0=0
+    a1=0
+    for line in f:
+        a=re.search('Step,File,∆E\(Eh\)',line)
+        if a:
+            a0=1
+        b=re.search('1,Atoms5,-995.394366',line)
+        if b:
+            a1=1
+    os.chdir(opath)
+    assert a0*a1==1
+
+def test2_status_echart(current5):
+    opath=os.getcwd()
+    os.chdir('./MCPoly/tests')
+    data=echart(files=current5,loc='./data_status/',energy_pattern='Gibbs',fig_pattern='bar',hartree=False,absolute=False,figdata=True,savefig=False,dataname='Result2',xx=True)
+    assert data==[0.,97752.61908948798]
+    f=open('./data_status/Result2.csv','r')
+    a0=0
+    a1=0
+    for line in f:
+        a=re.search('Step,File,∆G\(kcal/mol\)',line)
+        if a:
+            a0=1
+        b=re.search('1,Atoms5,97752.61908948798',line)
+        if b:
+            a1=1
+    os.chdir(opath)
+    assert a0*a1==1
+
+@pytest.fixture
+def current1():
+    return status('Atoms1',loc='./data_status/')
+
+def test_status_enthalpy(current1):
+    opath=os.getcwd()
+    os.chdir('./MCPoly/tests')
+    num=current1.enthalpy()
+    os.chdir(opath)
+    assert num==-1150.866574
+
+def test_status_entropy_correction(current1):
+    opath=os.getcwd()
+    os.chdir('./MCPoly/tests')
+    num=current1.entropy_correction(unit='kcal/mol')
+    os.chdir(opath)
+    assert num==-0.052537*627.509
+
+def test_status_mulliken_charge(current1):
+    opath=os.getcwd()
+    os.chdir('./MCPoly/tests')
+    num=current1.mulliken_charge(12)
+    os.chdir(opath)
+    assert num==-0.148834
+
+def test_status_loewdin_charge(current1):
+    opath=os.getcwd()
+    os.chdir('./MCPoly/tests')
+    num=current1.loewdin_charge(3)
+    os.chdir(opath)
+    assert num==-0.669500
+
+def test_status_atom(current1):
+    opath=os.getcwd()
+    os.chdir('./MCPoly/tests')
+    atoms=current1.atom()
+    os.chdir(opath)
+    assert atoms[5]==['F', -8.322068, 0.541485, -0.153449]
+
+def test_status_atom_num(current1):
+    opath=os.getcwd()
+    os.chdir('./MCPoly/tests')
+    num=current1.atom_num()
+    os.chdir(opath)
+    assert num==14

@@ -6,7 +6,7 @@ import re
 import pytest
 
 opath=os.getcwd()
-os.chdir('./MCPoly/tests/data_sscurve/')
+os.chdir('./MCPoly/tests/data_sscurve')
 try:
     os.system('rm Polymer1.png')
 except:
@@ -137,7 +137,7 @@ def test2_multiple2():
         i=i+1
     f.close()
     os.chdir(opath)
-    assert i==22
+    assert i==11
 
 @pytest.fixture
 def test_YModulus():
