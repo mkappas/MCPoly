@@ -70,6 +70,7 @@ def echart(files=[],loc='./',energy_pattern='Energy',hartree=False,absolute=Fals
                 datas.append(data)
             except:
                 datas.append(None)
+    os.chdir(opath)
     os.chdir(loc)
     Ebar=np.array(datas)
     if absolute==False:

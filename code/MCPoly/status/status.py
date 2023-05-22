@@ -1,5 +1,6 @@
 import re
 import os
+import sys
 import matplotlib.pyplot as plt
 from ipywidgets import interact
 import ipywidgets as iw
@@ -152,10 +153,11 @@ def normalstatus(loc,file,choose=0,figureonly=False,statusonly=False):
         if x3:
             s1=4
     if statusonly==True:
-        os.chdir(path)
         if s2==1:
+            os.chdir(path)
             return 2
         else:
+            os.chdir(path)
             return s1
     if figureonly==False:
         print('{0} turns have been calculated.'.format(term))
@@ -164,18 +166,103 @@ def normalstatus(loc,file,choose=0,figureonly=False,statusonly=False):
     os.chdir(path)
     return energy
 
-def gibbs_free_energy(loc, file):
+def thermo(loc, file, keyword):
     path = os.getcwd()
     os.chdir(loc)
     f=open(file+'.out','r')
     for line in f:
-        a=re.search('Final Gibbs free energy', line)
-        if a:
-            b=re.search(r'-[0-9]+\.[0-9]+', line)
-            os.chdir(path)
-            return '{0:.6f}'.format(eval(b.group(0)))
+        if keyword=='Gibbs':
+            a=re.search('Final Gibbs free energy', line)
+            if a:
+                b=re.search(r'-[0-9]+\.[0-9]+', line)
+                os.chdir(path)
+                return '{0:.6f}'.format(eval(b.group(0)))
+        if keyword=='Enthalpy':
+            a=re.search('Total enthalpy', line)
+            if a:
+                b=re.search(r'-[0-9]+\.[0-9]+', line)
+                os.chdir(path)
+                return '{0:.6f}'.format(eval(b.group(0)))
+        if keyword=='Entropy':
+            a=re.search('Total entropy correction', line)
+            if a:
+                b=re.findall(r'-[0-9]+\.[0-9]+', line)
+                os.chdir(path)
+                return '{0:.6f}'.format(eval(b[0]))
     os.chdir(path)
     raise Exception("'{0}.out' may not have keyword freq, or it's aborted. Please check your input file and recalculate it.".format(file))
+
+def charge(loc, file, num, keyword):
+    path = os.getcwd()
+    os.chdir(loc)
+    f=open(file+'.out','r')
+    i=0
+    ac=[None]*200
+    for line in f:
+        if keyword=='Mulliken':
+            d=re.search('Sum of atomic charges',line)
+            if d:
+                i=0
+            a=re.search('MULLIKEN ATOMIC CHARGES',line)
+            if a:
+                i=1
+            if i==1:
+                b=re.search(r'-?[0-9]+\.[0-9]+', line)
+                if b:
+                    n=re.findall(r'[0-9]+', line)
+                    ac[eval(n[0])]=eval(b.group(0))
+        elif keyword=='Loewdin':
+            a=re.search('LOEWDIN ATOMIC CHARGES',line)
+            if a:
+                i=1
+            if i==1:
+                b=re.search(r'-?[0-9]+\.[0-9]+', line)
+                if b:
+                    n=re.findall(r'[0-9]+', line)
+                    ac[eval(n[0])]=eval(b.group(0))
+            d=re.search('LOEWDIN REDUCED ORBITAL CHARGES',line)
+            if d:
+                i=0
+    os.chdir(path)
+    return ac[num]
+
+def atoms_all(loc, file):
+    path = os.getcwd()
+    os.chdir(loc)
+    f=open(file+'.out','r')
+    i=0
+    n=0
+    atoms=[['NOT',99999,99999,99999]]*200
+    elements=['NOT']*200
+    xyzs=[[99999,99999,99999]]*200
+    for line in f:
+        d=re.search('CARTESIAN COORDINATES \(A\.U\.\)',line)
+        if d:
+            i=0
+            n=0
+        if i==1:
+            b=re.search(r'[A-Z][a-z]*', line)
+            if b:
+                xyz=re.findall(r'-?[0-9]+\.[0-9]+', line)
+                xyz[0]=eval(xyz[0])
+                xyz[1]=eval(xyz[1])
+                xyz[2]=eval(xyz[2])
+                elements[n]=b.group(0)
+                xyzs[n]=xyz
+                atoms[n]=[b.group(0),*xyz]
+                n=n+1
+        a=re.search('CARTESIAN COORDINATES \(ANGSTROEM\)',line)
+        if a:
+            i=1
+    while 1:
+        try:
+            atoms.remove(['NOT',99999,99999,99999])
+            elements.remove('NOT')
+            xyzs.remove([99999,99999,99999])
+        except:
+            break
+    os.chdir(path)
+    return atoms
 
 class status:
     """
@@ -243,25 +330,98 @@ class status:
         E=normalstatus(self.loc,self.file,figureonly=True)
         return eval('{0:.6f}'.format(E[-1]))
 
-    def converged_energy(self):
+    def converged_energy(self,unit='Eh'):
         """
     A method to see the Converged Energy of a system.
-    converged_energy()
+    converged_energy(unit)
+    unit: Energy unit, including 'Eh' and 'kcal/mol'. The default is 'Eh' (Hartree).
         """
         E=normalstatus(self.loc,self.file,figureonly=True)
         state=normalstatus(self.loc,self.file,figureonly=True,statusonly=True)
         if state!=2:
             raise Exception("This optimisation of '{0}.out' is failed. No converged energy.".format(self.file))
         else:
-            return eval('{0:.6f}'.format(E[-1]))
+            x=eval('{0:.6f}'.format(E[-1]))
+            if unit=='Eh':
+                return x
+            elif unit=='kcal/mol':
+                return x*627.509
     
-    def gibbs(self):
+    def gibbs(self,unit='Eh'):
         """
     A method to see the Gibbs Free Energy of a system.
-    gibbs()
+    gibbs(unit)
+    unit: Energy unit, including 'Eh' and 'kcal/mol'. The default is 'Eh' (Hartree).
     TIPS: Make sure the optimisation includes key word 'freq', which means frequency calculation.
         """
-        return eval(gibbs_free_energy(self.loc,self.file))
+        x=eval(thermo(self.loc,self.file,keyword='Gibbs'))
+        if unit=='Eh':
+            return x
+        elif unit=='kcal/mol':
+            return x*627.509
+    
+    def enthalpy(self,unit='Eh'):
+        """
+    A method to see the total enthalpy of a system.
+    enthalpy(unit)
+    unit: Energy unit, including 'Eh' and 'kcal/mol'. The default is 'Eh' (Hartree).
+    TIPS: Make sure the optimisation includes key word 'freq', which means frequency calculation.
+        """
+        x=eval(thermo(self.loc,self.file,keyword='Enthalpy'))
+        if unit=='Eh':
+            return x
+        elif unit=='kcal/mol':
+            return x*627.509
+    
+    def entropy_correction(self,unit='Eh'):
+        """
+    A method to see the total entropy correction of a system.
+    enthalpy(unit)
+    unit: Energy unit, including 'Eh' and 'kcal/mol'. The default is 'Eh' (Hartree).
+    TIPS: Make sure the optimisation includes key word 'freq', which means frequency calculation.
+        """
+        x=eval(thermo(self.loc,self.file,keyword='Entropy'))
+        if unit=='Eh':
+            return x
+        elif unit=='kcal/mol':
+            return x*627.509
+    
+    def mulliken_charge(self,num):
+        """
+    A method to see the Mulliken Charge of an atom.
+    mulliken_charge(num)
+    num: Atom number.
+    TIPS: The atom starts from 0. Don't surpass the maximum, or it will cause error.
+        """
+        x=charge(self.loc,self.file,num,keyword='Mulliken')
+        return x
+    
+    def loewdin_charge(self,num):
+        """
+    A method to see the Loewdin Charge of an atom.
+    loewdin_charge(num)
+    num: Atom number.
+    TIPS: The atom starts from 0. Don't surpass the maximum, or it will cause error.
+        """
+        x=charge(self.loc,self.file,num,keyword='Loewdin')
+        return x
+    
+    def atom(self):
+        """
+    A method to find out the atom information of the system.
+    atom()
+    TIPS: In the following list, a piece of atom information is like that:
+        ['C', 4.11199532065866, 1.93907233706568, -1.49149364116961]
+        The first one is the element type, the following three numbers are location in x,y,z-axis.
+        """
+        return atoms_all(self.loc,self.file)
+    
+    def atom_num(self):
+        """
+    A method to find out the atom number of the system.
+    atom_num()
+        """
+        return len(atoms_all(self.loc,self.file))
     
     def figure(self,num=0,width=300,height=300):
         """
@@ -289,7 +449,7 @@ class status:
     TIPS: Make sure your _trj.xyz file is in the document with .out file, or there will be FileNotFoundError!!!
     
     figurestatus(num=0, width=300, height=300)
-    num: The step of your convergence.
+    num: The step of your convergence. The default is the origin structure.
     width, height: The size of your 3D geometry molecule strcuture. Default: 300x300.
     After forming the 3D geometry molecule strcuture, you can scroll to see other structures of relevant molecules.
         """
@@ -305,5 +465,31 @@ class status:
             except:
                 if num==len(figure)-1:
                     print("The last step hasn't been optimised yet.")
-        
         interact(turn,num=iw.IntSlider(min=0,max=len(figure)-1,step=1,value=num))
+    
+    def figurecharge(self,width=300,height=300):
+        """
+    A method to see the Mulliken Charge of each atom base on 3D geometry structure of the system.
+    TIPS: Make sure your .xyz file is in the document with .out file, or there will be FileNotFoundError!!!
+    
+    width, height: The size of your 3D geometry molecule strcuture. Default: 300x300.
+    After forming the 3D geometry molecule strcuture, you can scroll to see the charge of the relevant atom.
+        """
+        output=iw.Output()
+        mydir = os.path.dirname( __file__ )
+        orcadir = os.path.join(mydir, '..', 'orcaset')
+        sys.path.append(orcadir)
+        from view3dchoose import view3dchoose
+        
+        chargetype=iw.Dropdown(description='Atomic Charge Type',options=['Mulliken','Loewdin'])
+        num=iw.IntSlider(value=0,min=0,max=len(atoms_all(self.loc,self.file))-1)
+        
+        def GUI(chargetype, num):
+            output.clear_output()
+            with output:
+                alls=atoms_all(self.loc,self.file)
+                view3dchoose(self.file,self.loc,choose=[num],width=width,height=height)
+                print('Atom: {0}, Element: {1}, Charge: {2}'.format(num,alls[num][0],charge(self.loc,self.file,num,chargetype))) 
+            
+        geoout=iw.interactive_output(GUI, {'chargetype': chargetype, 'num': num})
+        display(iw.VBox([chargetype,num,output]))
