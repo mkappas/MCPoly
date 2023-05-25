@@ -5,9 +5,8 @@ Some methods to deal with some manipulation of computational chemistry, mostly a
 ## Overview
 `MCPoly` is a Python library to make some steps of computational chemistry easier. It includes some functions of drawing molecule structures, creating proper .xyz , .inp , .mol and .data file, which specialised for using ORCA and LAMMPS, and some functions for researching the mechanical property of some polymers.
 
-## Updated in v0.3.1 (22.05.23)
-1. Change the style of the reaction energy diagram, which can make the pattern of the figure better.
-2. Status update: Now you can use it to get charge, entropy and basic information of atoms.
+## Updated in v0.3.2 (25.05.23)
+Fix some bugs about drawing 3-membered ring of 'moldraw'.
 
 ## Updated in v0.3.0 (19.05.23)
 1. BIG UPDATE: Now status package can be used to see energy and gibbs free energy by .energy and .gibbs.
