@@ -2,7 +2,8 @@ import os
 import re
 import time as t
 
-def orca(file,orcaloc='./',fileloc='./',saveloc='./'):
+
+def orca(file, orcaloc="./", fileloc="./", saveloc="./"):
     """
     The method to calculate .inp file by ORCA.
     orca(file,orcaloc='./',fileloc='./',saveloc='./')
@@ -32,15 +33,15 @@ def orca(file,orcaloc='./',fileloc='./',saveloc='./'):
           4. You can see the error of ORCA directly from the output.
     """
 
-    if orcaloc=='./':
-        os.system('orca {0}{1}.inp > {2}{1}.out'.format(fileloc,file,saveloc))
+    if orcaloc == "./":
+        os.system("orca {0}{1}.inp > {2}{1}.out".format(fileloc, file, saveloc))
     else:
-        path = os.getcwd() + '/'
+        path = os.getcwd() + "/"
         os.chdir(orcaloc)
-        if fileloc=='./':
-            fileloc=path
-        if saveloc=='./':
-            saveloc=path
-        os.system('./orca {0}{1}.inp > {2}{1}.out'.format(fileloc,file,saveloc))
-        print('Program Completed.[{0}]\n'.format(t.ctime(t.time())))
+        if fileloc == "./":
+            fileloc = path
+        if saveloc == "./":
+            saveloc = path
+        os.system("./orca {0}{1}.inp > {2}{1}.out".format(fileloc, file, saveloc))
+        print("Program Completed.[{0}]\n".format(t.ctime(t.time())))
         os.chdir(path[:-1])
