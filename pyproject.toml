@@ -19,3 +19,4 @@ classifiers = [
 [tool.black]
 check = true
 verbose = true
+diff = false
