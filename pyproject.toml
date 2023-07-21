@@ -17,6 +17,5 @@ classifiers = [
 "Homepage" = "https://github.com/Omicron-Fluor/MCPoly/"
 
 [tool.black]
-check = true
 verbose = true
-diff = false
+diff = true
