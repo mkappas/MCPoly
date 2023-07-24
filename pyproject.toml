@@ -19,3 +19,6 @@ classifiers = [
 [tool.black]
 verbose = true
 required-version = 23
+
+[tool.isort]
+profile = "black"
