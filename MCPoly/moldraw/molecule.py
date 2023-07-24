@@ -1,19 +1,16 @@
 import math as m
-import numpy as np
-from ase.io import read, write
-from ase import Atoms
-from ase.visualize import view
-from rdkit.Chem import AllChem, TorsionFingerprints
-from rdkit import Chem
-from rdkit.ML.Cluster import Butina
-from rdkit import Chem
-from rdkit.Chem import Draw
-from rdkit.Chem.Draw import IPythonConsole
-from rdkit.Chem.Draw import MolToFile
-import py3Dmol
-from rdkit.Chem import rdDetermineBonds
 import os
 import re
+
+import numpy as np
+import py3Dmol
+from ase import Atoms
+from ase.io import read, write
+from ase.visualize import view
+from rdkit import Chem
+from rdkit.Chem import AllChem, Draw, TorsionFingerprints, rdDetermineBonds
+from rdkit.Chem.Draw import IPythonConsole, MolToFile
+from rdkit.ML.Cluster import Butina
 
 
 def gen_conformers(

@@ -1,18 +1,20 @@
-import ipywidgets as widgets
-import sys
 import os
 import re
-from ase.io import read
+import sys
+
+import ipywidgets as widgets
 from ase import Atoms
+from ase.io import read
 
 mydir = os.path.dirname(__file__)
 orcadir = os.path.join(mydir, "..", "orcaset")
 sys.path.append(orcadir)
 
+import time as t
+
+from orca import orca
 from view3dchoose import view3dchoose
 from XYZtoINP import XYZtoINP
-from orca import orca
-import time as t
 
 mydir = os.path.dirname(__file__)
 statusdir = os.path.join(mydir, "..", "status")

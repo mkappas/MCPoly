@@ -1,12 +1,13 @@
-import ipywidgets as widgets
-import sys
 import os
+import sys
+
+import ipywidgets as widgets
 
 mydir = os.path.dirname(__file__)
 statusdir = os.path.join(mydir, "..", "status")
 sys.path.append(statusdir)
-from status import status
 from gui import gui as gui3
+from status import status
 
 mydir = os.path.dirname(__file__)
 orcadir = os.path.join(mydir, "..")  # , 'orcaset')

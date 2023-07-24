@@ -1,6 +1,8 @@
-from MCPoly.moldraw import molecule
-import pytest
 import os
+
+import pytest
+
+from MCPoly.moldraw import molecule
 
 
 @pytest.fixture

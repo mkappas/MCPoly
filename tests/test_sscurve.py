@@ -1,9 +1,9 @@
-from MCPoly.sscurve import single
-from MCPoly.sscurve import multiple
-from MCPoly.sscurve import YModulus
 import os
 import re
+
 import pytest
+
+from MCPoly.sscurve import YModulus, multiple, single
 
 opath = os.getcwd()
 os.chdir("./MCPoly/tests/data_sscurve")

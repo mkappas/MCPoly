@@ -1,10 +1,12 @@
 import os
 import re
 import sys
-from .XYZtoINP import XYZtoINP
-from .orca import orca
-from ase.io import read
 import time as t
+
+from ase.io import read
+
+from .orca import orca
+from .XYZtoINP import XYZtoINP
 
 mydir = os.path.dirname(__file__)
 statusdir = os.path.join(mydir, "..", "status")

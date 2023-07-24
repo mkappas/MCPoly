@@ -1,7 +1,9 @@
-from MCPoly.lmpset import mould
-import re
 import os
+import re
+
 import pytest
+
+from MCPoly.lmpset import mould
 
 
 @pytest.fixture

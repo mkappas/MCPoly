@@ -1,9 +1,10 @@
-from MCPoly.status import status
-from MCPoly.status import echart
-from MCPoly import view3d
-import pytest
 import os
 import re
+
+import pytest
+
+from MCPoly import view3d
+from MCPoly.status import echart, status
 
 
 @pytest.fixture

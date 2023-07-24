@@ -1,6 +1,7 @@
-from .XYZtoINP import XYZtoINP
-from .orca import orca
 import time as t
+
+from .orca import orca
+from .XYZtoINP import XYZtoINP
 
 
 class multiorca:

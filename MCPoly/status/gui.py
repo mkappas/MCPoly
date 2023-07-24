@@ -1,13 +1,14 @@
-import ipywidgets as widgets
 import os
 import re
+import sys
 import time as t
+import warnings
+
+import ipywidgets as widgets
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-import matplotlib.pyplot as plt
-import warnings
-import sys
 
 mydir = os.path.dirname(__file__)
 statusdir = os.path.join(mydir, "..", "status")

@@ -1,7 +1,8 @@
 import math as m
+
 import numpy as np
-from ase.io import read, write
 from ase import Atoms
+from ase.io import read, write
 from ase.visualize import view
 
 

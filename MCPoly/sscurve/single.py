@@ -1,9 +1,10 @@
-from ase.io import read
 import os
 import re
+
+import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-import matplotlib.pyplot as plt
+from ase.io import read
 
 
 def curvef(loc, polymer, start, end, savefig, savedata, xx=False):

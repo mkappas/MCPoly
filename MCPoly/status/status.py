@@ -1,13 +1,14 @@
-import re
 import os
+import re
 import sys
-import matplotlib.pyplot as plt
-from ipywidgets import interact
+
 import ipywidgets as iw
+import matplotlib.pyplot as plt
 import py3Dmol
+from ipywidgets import interact
 from rdkit import Chem
-from rdkit.Chem.Draw import IPythonConsole
 from rdkit.Chem import rdDetermineBonds
+from rdkit.Chem.Draw import IPythonConsole
 
 
 def status_judge(s1, s2, converge):

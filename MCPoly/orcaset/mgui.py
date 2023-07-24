@@ -1,14 +1,15 @@
-import ipywidgets as widgets
 import os
 import re
 import sys
 import time as t
 
+import ipywidgets as widgets
+
 mydir = os.path.dirname(__file__)
 orcadir = os.path.join(mydir, "..", "orcaset")
 sys.path.append(orcadir)
-from XYZtoINP import XYZtoINP
 from orca import orca
+from XYZtoINP import XYZtoINP
 
 mydir = os.path.dirname(__file__)
 statusdir = os.path.join(mydir, "..", "status")

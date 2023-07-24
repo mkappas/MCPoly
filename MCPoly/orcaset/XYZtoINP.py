@@ -1,6 +1,7 @@
 import os
-from ase.io import read
 import warnings
+
+from ase.io import read
 
 
 def XYZtoINP(

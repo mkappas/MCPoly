@@ -1,10 +1,9 @@
-from MCPoly.orcaset import XYZtoINP
-from MCPoly.orcaset import orca
-from MCPoly.orcaset import ssorca
-from MCPoly.orcaset import multiorca
 import os
 import re
+
 import pytest
+
+from MCPoly.orcaset import XYZtoINP, multiorca, orca, ssorca
 
 
 def test_XYZtoINP2():

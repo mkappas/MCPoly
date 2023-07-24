@@ -1,10 +1,11 @@
 import pytest
-from MCPoly.orcaset import multiorca
-from MCPoly.status import status
+
 from MCPoly import view3d
-from MCPoly.sscurve import multiple
 from MCPoly.lmpset import mould
 from MCPoly.moldraw import molecule
+from MCPoly.orcaset import multiorca
+from MCPoly.sscurve import multiple
+from MCPoly.status import status
 
 
 def object_orcaset():

@@ -1,10 +1,12 @@
 import os
 import re
+import warnings
+
+import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-import matplotlib.pyplot as plt
+
 from .YModulus import YModulus
-import warnings
 
 
 def multiple(

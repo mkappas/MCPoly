@@ -1,11 +1,10 @@
 import os
 from itertools import product
-from rdkit import Chem
-from rdkit.Chem import Draw
-from rdkit.Chem.Draw import IPythonConsole
-from rdkit.Chem.Draw import MolToFile
+
 import py3Dmol
-from rdkit.Chem import rdDetermineBonds
+from rdkit import Chem
+from rdkit.Chem import Draw, rdDetermineBonds
+from rdkit.Chem.Draw import IPythonConsole, MolToFile
 
 
 def cleanup_qm9_xyz(fname):

@@ -1,14 +1,16 @@
-import ipywidgets as widgets
 import os
 import re
+import sys
 import time as t
+import warnings
+
+import ipywidgets as widgets
+import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-import matplotlib.pyplot as plt
-from .YModulus import YModulus
+
 from .single import single
-import warnings
-import sys
+from .YModulus import YModulus
 
 mydir = os.path.dirname(__file__)
 viewdir = os.path.join(mydir, "..", "orcaset")

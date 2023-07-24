@@ -1,14 +1,16 @@
-import ipywidgets as widgets
-from .XYZtoINP import XYZtoINP
-from .orca import orca
-from .multiorca import multiorca
-from .ssorca import ssorca
-from ase.io import read
-from ase import Atoms
-import sys
 import os
 import re
+import sys
+
+import ipywidgets as widgets
+from ase import Atoms
+from ase.io import read
+
+from .multiorca import multiorca
+from .orca import orca
+from .ssorca import ssorca
 from .view3dchoose import view3dchoose
+from .XYZtoINP import XYZtoINP
 
 mydir = os.path.dirname(__file__)
 statusdir = os.path.join(mydir, "..", "status")
