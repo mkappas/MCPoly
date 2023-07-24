@@ -15,3 +15,10 @@ classifiers = [
 
 [project.urls]
 "Homepage" = "https://github.com/Omicron-Fluor/MCPoly/"
+
+[tool.black]
+verbose = true
+required-version = 23
+
+[tool.isort]
+profile = "black"

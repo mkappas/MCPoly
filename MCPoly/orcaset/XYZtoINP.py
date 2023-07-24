@@ -1,8 +1,31 @@
 import os
-from ase.io import read
 import warnings
 
-def XYZtoINP(file,inpname='',fileloc='./',saveloc='./',method='B3LYP',basis_set='def2-SVP',opt=False,freq=False,scan=False,external_force=False,ts=False,aim=[0,0],stretch=-1,scanstep=10,strain=-1,maxiter=-1,maxcore=-1,corenum=1,electron=0,state=1):
+from ase.io import read
+
+
+def XYZtoINP(
+    file,
+    inpname="",
+    fileloc="./",
+    saveloc="./",
+    method="B3LYP",
+    basis_set="def2-SVP",
+    opt=False,
+    freq=False,
+    scan=False,
+    external_force=False,
+    ts=False,
+    aim=[0, 0],
+    stretch=-1,
+    scanstep=10,
+    strain=-1,
+    maxiter=-1,
+    maxcore=-1,
+    corenum=1,
+    electron=0,
+    state=1,
+):
     """
     The method to convert .xyz file into .inp file.
     XYZtoINP(file,inpname='',loc='./',method='B3LYP',basis_set='def2-SVP',opt=False,freq=False,scan=False,external_force=False,ts=False,aim=[0,0],stretch=1,scanstep=10,strain=-1,maxiter=-1,maxcore=-1,corenum=1,electron=0,state=1)
@@ -98,89 +121,111 @@ def XYZtoINP(file,inpname='',fileloc='./',saveloc='./',method='B3LYP',basis_set=
                 ...
             *
     """
-    f=open(fileloc+file+'.xyz','r')
-    if inpname=='':
+    f = open(fileloc + file + ".xyz", "r")
+    if inpname == "":
         try:
-            w=open(saveloc+file+'.inp','x')
+            w = open(saveloc + file + ".inp", "x")
         except:
-            w=open(saveloc+file+'.inp','w')
+            w = open(saveloc + file + ".inp", "w")
     else:
         try:
-            w=open(saveloc+inpname+'.inp','x')
+            w = open(saveloc + inpname + ".inp", "x")
         except:
-            w=open(saveloc+inpname+'.inp','w')
-    w.write('#Powered by MCPoly\n\n')
-    w.write('! {0} {1} '.format(method,basis_set))
-    if opt==True:
-        if scan==True:
+            w = open(saveloc + inpname + ".inp", "w")
+    w.write("#Powered by MCPoly\n\n")
+    w.write("! {0} {1} ".format(method, basis_set))
+    if opt == True:
+        if scan == True:
             pass
-        if ts==True:
-            w.write('OPTTS ')
+        if ts == True:
+            w.write("OPTTS ")
         else:
-            w.write('OPT ')
-    if external_force==True and opt==False:
-        w.write('OPT ')
-    if freq==True:
-        if opt==False:
-            warnings.warn('Your set the frequency calculation without geometry optimisation.')
-        w.write('FREQ')
-    w.write('\n')
-    
-    if maxiter!=-1:
-        if maxiter<=0 or type(maxiter)==float:
+            w.write("OPT ")
+    if external_force == True and opt == False:
+        w.write("OPT ")
+    if freq == True:
+        if opt == False:
+            warnings.warn(
+                "Your set the frequency calculation without geometry optimisation."
+            )
+        w.write("FREQ")
+    w.write("\n")
+
+    if maxiter != -1:
+        if maxiter <= 0 or type(maxiter) == float:
             raise ValueError("Key word 'maxiter' must be a positive integar.")
-        w.write('%SCF\n    MAXITER {0}\n'.format(maxiter))
-    
-    if maxcore!=-1:
-        w.write('%maxcore {0}\n'.format(maxcore))
-        if maxcore<=2048:
-            warnings.warn('Your max core space is only {0:.3f} Å. You might delete this key words to get the same calculation speed, or try bigger one.'.format(maxcore))
+        w.write("%SCF\n    MAXITER {0}\n".format(maxiter))
 
-    if corenum!=1:
-        w.write('%PAL NPROCS {0} END\n'.format(corenum))
-    
-    if scan==True:
-        if aim==[0,0]:
+    if maxcore != -1:
+        w.write("%maxcore {0}\n".format(maxcore))
+        if maxcore <= 2048:
+            warnings.warn(
+                "Your max core space is only {0:.3f} Å. You might delete this key words to get the same calculation speed, or try bigger one.".format(
+                    maxcore
+                )
+            )
+
+    if corenum != 1:
+        w.write("%PAL NPROCS {0} END\n".format(corenum))
+
+    if scan == True:
+        if aim == [0, 0]:
             raise ValueError("You haven't set the site of two atoms you scan.")
-        elif aim[0]<0 or aim[1]<0 or type(aim[0])==float or type(aim[1])==float:
+        elif aim[0] < 0 or aim[1] < 0 or type(aim[0]) == float or type(aim[1]) == float:
             raise ValueError("The site of two atoms must be not negative integar.")
-        elif aim[0]==aim[1]:
+        elif aim[0] == aim[1]:
             raise ValueError("You can't scan on the same two atoms.")
-        if scanstep<0 or type(scanstep)==float:
+        if scanstep < 0 or type(scanstep) == float:
             raise ValueError("The scan steps must be positive integar.")
-        if ts==True:
-            raise AssertionError("You can't set scan and transition state at the same time.")
-        if freq==True:
-            raise AssertionError("You can't set scan and frequency calculation at the same time.")
-        atoms=read(fileloc+file+'.xyz')
-        distance=atoms.get_distance(aim[0],aim[1])
-        if distance+stretch<0:
+        if ts == True:
+            raise AssertionError(
+                "You can't set scan and transition state at the same time."
+            )
+        if freq == True:
+            raise AssertionError(
+                "You can't set scan and frequency calculation at the same time."
+            )
+        atoms = read(fileloc + file + ".xyz")
+        distance = atoms.get_distance(aim[0], aim[1])
+        if distance + stretch < 0:
             raise ValueError("You can't set the final distance of atoms less than 0.")
-        elif distance+stretch<=0.8:
-            warnings.warn('Your final distance of two atoms is only {0:.3f} Å.'.format(distance+stretch))
-        w.write('%geom Scan\n')
-        w.write('B {0} {1} = {2:.3f}, {3:.3f}, {4}\nend\nend\n'.format(*aim, distance, distance+stretch,scanstep))
+        elif distance + stretch <= 0.8:
+            warnings.warn(
+                "Your final distance of two atoms is only {0:.3f} Å.".format(
+                    distance + stretch
+                )
+            )
+        w.write("%geom Scan\n")
+        w.write(
+            "B {0} {1} = {2:.3f}, {3:.3f}, {4}\nend\nend\n".format(
+                *aim, distance, distance + stretch, scanstep
+            )
+        )
 
-    if external_force==True:
-        if aim==[0,0]:
+    if external_force == True:
+        if aim == [0, 0]:
             raise ValueError("You haven't set the site of two atoms you scan.")
-        elif aim[0]<0 or aim[1]<0 or type(aim[0])==float or type(aim[1])==float:
+        elif aim[0] < 0 or aim[1] < 0 or type(aim[0]) == float or type(aim[1]) == float:
             raise ValueError("The site of two atoms must be not negative integar.")
-        elif aim[0]==aim[1]:
+        elif aim[0] == aim[1]:
             raise ValueError("You can't scan on the same two atoms.")
-        if scan==True:
-            raise AssertionError("You can't set scan and external force at the same time.")
-        if ts==True:
-            raise AssertionError("You can't set external force and transition state at the same time.")
-        w.write('%geom\nPOTENTIALS\n')
-        w.write('{C '+'{0} {1} {2:.3f}'.format(*aim, strain)+'}\nend\nend\n')
+        if scan == True:
+            raise AssertionError(
+                "You can't set scan and external force at the same time."
+            )
+        if ts == True:
+            raise AssertionError(
+                "You can't set external force and transition state at the same time."
+            )
+        w.write("%geom\nPOTENTIALS\n")
+        w.write("{C " + "{0} {1} {2:.3f}".format(*aim, strain) + "}\nend\nend\n")
 
-    w.write('\n*xyz {0} {1}\n'.format(electron,state))
-    i=0
+    w.write("\n*xyz {0} {1}\n".format(electron, state))
+    i = 0
     for line in f:
-        i=i+1
-        if i>=3:
+        i = i + 1
+        if i >= 3:
             w.write(line)
-    w.write('*\n')
+    w.write("*\n")
     f.close()
     w.close()
